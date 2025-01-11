@@ -8,28 +8,30 @@ import { MenuItem } from "primeng/api";
     selector: "app-panel-menu",
     standalone: true,
     imports: [PanelMenuModule],
-    template: `
-        <p-panelMenu [model]="items" styleClass="w-full" />
-    `
+    template: ` <p-panelMenu [model]="items" styleClass="w-full" /> `,
   })
   export class PanelMenuComponent {
-
     public readonly items: MenuItem[] = [
-        {
-            label: 'Accueil',
-            icon: 'pi pi-home',
-            routerLink: ['/home']
-        },
-        {
-            label: 'Produits',
-            icon: 'pi pi-barcode',
-            routerLink: ['/products/list']
-        },
-        {
-            label: 'Panier',
-            icon: 'pi pi-shopping-cart',
-            routerLink: ['/cart']
-        }
-    ]
+      {
+        label: "Accueil",
+        icon: "pi pi-home",
+        routerLink: ["/home"],
+      },
+      {
+        label: "Produits",
+        icon: "pi pi-barcode",
+        routerLink: ["/products/list"],
+      },
+      {
+        label: "Panier",
+        icon: "pi pi-shopping-cart",
+        routerLink: ["/cart"],
+      },
+      {
+        label: "Contact",
+        icon: "pi pi-envelope",
+        routerLink: ["/contact"],
+      },
+    ];
   }
   

@@ -8,16 +8,17 @@ import { CartItem } from '../../data-access/cart.model';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-cart-view',
-  templateUrl: './cart-view.component.html',
+  selector: "app-cart-view",
+  templateUrl: "./cart-view.component.html",
+  styleUrls: ["./cart-view.component.scss"],
   standalone: true,
   imports: [
     TableModule,
     ButtonModule,
     InputNumberModule,
     CurrencyPipe,
-    FormsModule
-  ]
+    FormsModule,
+  ],
 })
 export class CartViewComponent {
   private readonly cartService = inject(CartService);

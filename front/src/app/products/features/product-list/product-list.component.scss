@@ -3,3 +3,25 @@
     height: 100%;
     overflow: auto;
 }
+
+:host ::ng-deep {
+    .p-paginator {
+        .p-paginator-current {
+            margin-left: auto;
+        }
+    }
+    
+    .p-progressbar {
+        height: .5rem;
+        background-color: #D8DADC;
+    }
+    
+    .p-datascroller .p-datascroller-header {
+        background: #fff;
+        color: #495057;
+        border: 1px solid #e9ecef;
+        padding: 1rem;
+        font-weight: 600;
+        border-radius: 3px 3px 0 0;
+    }
+}

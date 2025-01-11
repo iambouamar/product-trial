@@ -171,5 +171,6 @@ export class ProductListComponent implements OnInit {
       return matchesSearch && matchesCategory;
     });
     dv.value = filteredProducts;
+    dv.first = 0; // Reset to first page when filtering
   }
 }

@@ -1,0 +1,68 @@
+<div class="card">
+    <h1>Mon Panier</h1>
+
+    <p-table [value]="items()" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Produit</th>
+                <th>Prix unitaire</th>
+                <th>Quantité</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>
+                    <div class="flex align-items-center gap-2">
+                        <img [src]="'assets/products/' + item.product.image" 
+                             [alt]="item.product.name" 
+                             width="50" 
+                             class="shadow-2" />
+                        <span>{{ item.product.name }}</span>
+                    </div>
+                </td>
+                <td>{{ item.product.price | currency:'EUR' }}</td>
+                <td>
+                    <p-inputNumber [ngModel]="item.quantity"
+                                 (ngModelChange)="updateQuantity(item, $event)"
+                                 [showButtons]="true"
+                                 [min]="1"
+                                 buttonLayout="horizontal"
+                                 spinnerMode="horizontal"
+                                 [inputStyle]="{ width: '100px' }"
+                                 decrementButtonClass="p-button-danger"
+                                 incrementButtonClass="p-button-success">
+                    </p-inputNumber>
+                </td>
+                <td>{{ item.product.price * item.quantity | currency:'EUR' }}</td>
+                <td>
+                    <p-button icon="pi pi-trash" 
+                             severity="danger"
+                             (onClick)="removeItem(item)">
+                    </p-button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <tr>
+                <td colspan="3" class="text-right font-bold">Total</td>
+                <td>{{ totalPrice() | currency:'EUR' }}</td>
+                <td>
+                    <p-button label="Vider le panier" 
+                             severity="danger"
+                             [disabled]="!items().length"
+                             (onClick)="clearCart()">
+                    </p-button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5" class="text-center p-4">
+                    Votre panier est vide
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

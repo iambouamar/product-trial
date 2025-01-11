@@ -27,13 +27,12 @@
         @for (product of products; track product) {
             <p-card class="block mb-2">
                 <div class="flex">
-                    <!-- Left side: Image -->
-                    <div class="w-3 flex align-items-center justify-content-center">
-                        <img [src]="'assets/products/' + product.image" [alt]="product.name" class="w-full shadow-2" />
+                    <div class="w-3">
+                        <img [src]="'https://picsum.photos/300/200?random=' + product.id" 
+                             [alt]="product.name" 
+                             class="w-full shadow-2" />
                     </div>
-                    
-                    <!-- Right side: Details -->
-                    <div class="w-9 pl-3">
+                    <div class="w-full pl-3">
                         <span class="text-sm text-secondary">{{ product.category }}</span>
                         <div class="text-xl font-bold mb-2">{{ product.name }}</div>
                         <p class="line-clamp-2 mb-2">{{ product.description }}</p>

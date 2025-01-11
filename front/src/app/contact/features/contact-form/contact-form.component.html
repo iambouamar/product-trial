@@ -1,0 +1,41 @@
+<div class="card">
+    <h1>Contact</h1>
+    
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-column gap-3">
+        <div class="flex flex-column gap-2">
+            <label for="email">Email*</label>
+            <input pInputText 
+                   id="email" 
+                   type="email" 
+                   formControlName="email"
+                   [ngClass]="{'ng-invalid ng-dirty': form.get('email')?.invalid && form.get('email')?.touched}">
+            <small class="p-error" *ngIf="getErrorMessage('email')">
+                {{ getErrorMessage('email') }}
+            </small>
+        </div>
+
+        <div class="flex flex-column gap-2">
+            <label for="message">Message*</label>
+            <textarea pInputTextarea 
+                      id="message" 
+                      formControlName="message"
+                      [ngClass]="{'ng-invalid ng-dirty': form.get('message')?.invalid && form.get('message')?.touched}"
+                      rows="5">
+            </textarea>
+            <small class="p-error" *ngIf="getErrorMessage('message')">
+                {{ getErrorMessage('message') }}
+            </small>
+            <small class="text-secondary">
+                {{ form.get('message')?.value?.length || 0 }}/300 caractères
+            </small>
+        </div>
+
+        <p-button type="submit" 
+                  [loading]="sending"
+                  [disabled]="form.invalid || sending"
+                  label="Envoyer">
+        </p-button>
+    </form>
+
+    <p-toast></p-toast>
+</div>

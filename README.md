@@ -1,3 +1,31 @@
+# Additional Features and Improvements
+
+Beyond the basic requirements, this implementation includes several enhancements:
+
+## Product List Enhancements
+- Advanced pagination system with configurable rows per page (9/18/27 items)
+- Combined search and category filtering
+- Dynamic sorting by price (ascending/descending) and name
+- Placeholder images using picsum.photos for better visual presentation
+
+## Shopping Cart Features
+- Real-time quantity synchronization between cart and product list
+- Persistent quantity controls in both views
+- Scrollable cart view for better handling of many items
+- Total price calculation with automatic updates
+
+## UI/UX Improvements
+- Consistent padding and layout across all pages
+- Responsive design with mobile-friendly controls
+- Loading states and empty states handling
+- Clear visual feedback for stock status
+
+## Technical Notes
+- Using PrimeNG components for consistent UI
+- Signal-based state management for cart
+- Computed properties for derived values (totals, filtered lists)
+- Placeholder images are provided by picsum.photos (this is a temporary solution and should be replaced with real product images in production)
+
 # Consignes
 
 - Vous êtes développeur front-end : vous devez réaliser les consignes décrites dans le chapitre [Front-end](#Front-end)

@@ -1,13 +1,17 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
-import { CurrencyPipe } from "@angular/common";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 import { Product } from "app/products/data-access/product.model";
 import { ProductsService } from "app/products/data-access/products.service";
 import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
-import { DataViewModule } from 'primeng/dataview';
-import { DialogModule } from 'primeng/dialog';
-import { TagModule } from 'primeng/tag';
+import { DataViewModule, DataView } from "primeng/dataview";
+import { DialogModule } from "primeng/dialog";
+import { TagModule } from "primeng/tag";
+import { DropdownModule } from "primeng/dropdown";
+import { InputTextModule } from "primeng/inputtext";
+import { InputNumberModule } from "primeng/inputnumber";
 import { CartService } from "app/cart/data-access/cart.service";
 
 const emptyProduct: Product = {
@@ -33,13 +37,17 @@ const emptyProduct: Product = {
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
   imports: [
-    DataViewModule, 
-    CardModule, 
-    ButtonModule, 
-    DialogModule, 
+    CommonModule,
+    FormsModule,
+    DataViewModule,
+    CardModule,
+    ButtonModule,
+    DialogModule,
     TagModule,
-    CurrencyPipe,
-    ProductFormComponent
+    DropdownModule,
+    InputTextModule,
+    InputNumberModule,
+    ProductFormComponent,
   ],
 })
 export class ProductListComponent implements OnInit {
@@ -47,6 +55,24 @@ export class ProductListComponent implements OnInit {
   private readonly cartService = inject(CartService);
 
   public readonly products = this.productsService.products;
+  public sortField = "";
+  public sortOrder = 1;
+  public searchQuery = "";
+  public selectedCategory: string | null = null;
+
+  public readonly categories = [
+    { label: "Tous", value: null },
+    { label: "Accessories", value: "Accessories" },
+    { label: "Fitness", value: "Fitness" },
+    { label: "Clothing", value: "Clothing" },
+    { label: "Electronics", value: "Electronics" },
+  ];
+
+  public readonly sortOptions = [
+    { label: "Prix ↑", value: "price" },
+    { label: "Prix ↓", value: "!price" },
+    { label: "Nom", value: "name" },
+  ];
 
   public isDialogVisible = false;
   public isCreation = false;
@@ -89,16 +115,61 @@ export class ProductListComponent implements OnInit {
     this.isDialogVisible = false;
   }
 
-  public getInventoryStatus(product: Product): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
+  public getInventoryStatus(
+    product: Product
+  ):
+    | "success"
+    | "secondary"
+    | "info"
+    | "warning"
+    | "danger"
+    | "contrast"
+    | undefined {
     switch (product.inventoryStatus) {
-      case 'INSTOCK': return 'success';
-      case 'LOWSTOCK': return 'warning';
-      case 'OUTOFSTOCK': return 'danger';
-      default: return 'info';
+      case "INSTOCK":
+        return "success";
+      case "LOWSTOCK":
+        return "warning";
+      case "OUTOFSTOCK":
+        return "danger";
+      default:
+        return "info";
     }
   }
 
+  public getCartQuantity(productId: number): number {
+    const cartItem = this.cartService
+      .items()
+      .find((item) => item.product.id === productId);
+    return cartItem?.quantity || 1;
+  }
+
   public addToCart(product: Product): void {
-    this.cartService.addItem(product);
+    this.cartService.addItem(product, product.quantity || 1);
+    product.quantity = 1; // Reset quantity after adding to cart
+  }
+
+  onSortChange(event: any) {
+    const value = event.value;
+    if (value.indexOf("!") === 0) {
+      this.sortOrder = -1;
+      this.sortField = value.substring(1);
+    } else {
+      this.sortOrder = 1;
+      this.sortField = value;
+    }
+  }
+
+  onFilter(dv: DataView) {
+    const searchValue = this.searchQuery.toLowerCase();
+    const filteredProducts = this.products().filter((product) => {
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchValue) ||
+        product.description.toLowerCase().includes(searchValue);
+      const matchesCategory =
+        !this.selectedCategory || product.category === this.selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+    dv.value = filteredProducts;
   }
 }

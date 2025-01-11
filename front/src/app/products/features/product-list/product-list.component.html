@@ -2,7 +2,27 @@
 
 <p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
 
-<p-dataView #dv [value]="products()">
+<p-dataView #dv [value]="products()" [sortField]="sortField" [sortOrder]="sortOrder" filterBy="name">
+    <ng-template pTemplate="header">
+        <div class="flex flex-column gap-2 md:flex-row md:justify-content-between">
+            <div class="p-inputgroup w-full md:w-20rem">
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-search"></i>
+                </span>
+                <input type="text" pInputText [(ngModel)]="searchQuery" 
+                       (input)="onFilter(dv)" placeholder="Rechercher...">
+            </div>
+            <div class="flex gap-2">
+                <p-dropdown [options]="categories" [(ngModel)]="selectedCategory" 
+                          placeholder="Catégorie" (onChange)="onFilter(dv)">
+                </p-dropdown>
+                <p-dropdown [options]="sortOptions" placeholder="Trier par" 
+                          (onChange)="onSortChange($event)">
+                </p-dropdown>
+            </div>
+        </div>
+    </ng-template>
+
     <ng-template pTemplate="list" let-products>
         @for (product of products; track product) {
             <p-card class="block mb-2">
@@ -21,9 +41,21 @@
                         <!-- Price and Stock Status -->
                         <div class="flex justify-content-between align-items-center">
                             <span class="text-2xl font-semibold">{{ product.price | currency:'EUR' }}</span>
-                            <p-tag [severity]="getInventoryStatus(product)">
-                                {{ product.inventoryStatus }}
-                            </p-tag>
+                            <div class="flex align-items-center gap-2">
+                                <p-inputNumber [(ngModel)]="product.quantity" 
+                                      [showButtons]="true" 
+                                      [min]="1" 
+                                      buttonLayout="horizontal" 
+                                      spinnerMode="horizontal" 
+                                      [inputStyle]="{ width: '70px' }"
+                                      [ngModel]="getCartQuantity(product.id)"
+                                      decrementButtonClass="p-button-secondary"
+                                      incrementButtonClass="p-button-secondary">
+                                </p-inputNumber>
+                                <p-tag [severity]="getInventoryStatus(product)">
+                                    {{ product.inventoryStatus }}
+                                </p-tag>
+                            </div>
                         </div>
 
                         <!-- Actions -->
